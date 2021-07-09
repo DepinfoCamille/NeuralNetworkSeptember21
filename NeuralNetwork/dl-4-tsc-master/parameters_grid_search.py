@@ -30,6 +30,10 @@ MAIN_FOLDER_TRAINING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSep
 MAIN_FOLDER_TESTING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\Data\\training_data_february_2021\\interventions"
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean\\buttons_list")
 
+ROOT_DIR = "~/workspace/NeuralNetworkSeptember21/dl-4-tsc-master/tune_parameters"
+MAIN_FOLDER_TRAINING_DATA = "~/workspace/Data/pilot_study_may_2021"
+MAIN_FOLDER_TESTING_DATA = "~/workspace/Data/training_data_february_2021/interventions")
+
 def create_and_train_classifier(x_train, y_train, x_val, y_val, output_directory, classifier_name, \
                                 dropout_conv1d, dropout_dense, channels_conv1d, batch_size):
 
@@ -118,7 +122,7 @@ if __name__ == "__main__":
     # Find optimal combination of features with default neural network parameters
     for feature_combination in features_combinations:
         for time_window_size, stride in time_windows_and_strides:
-            if i >= len(batch_sizes) * 69//len(batch_sizes):
+            if i >= len(batch_sizes) * 120//len(batch_sizes):
                 print("YO", i)
                 x_train, y_train = compute_sktime_input_from_pilot_study(MAIN_FOLDER_TRAINING_DATA, time_window_size, stride, \
                                                                 remove_unannotated_labels = True, 
@@ -145,7 +149,7 @@ if __name__ == "__main__":
 
             for batch_size in batch_sizes:
 
-                if i > 69:
+                if i > 120:
 
                     print("you", i)
 
