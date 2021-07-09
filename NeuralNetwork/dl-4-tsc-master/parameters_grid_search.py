@@ -31,8 +31,8 @@ MAIN_FOLDER_TESTING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSept
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean\\buttons_list")
 
 ROOT_DIR = "~/workspace/NeuralNetworkSeptember21/dl-4-tsc-master/tune_parameters"
-MAIN_FOLDER_TRAINING_DATA = "~/workspace/Data/pilot_study_may_2021"
-MAIN_FOLDER_TESTING_DATA = "~/workspace/Data/training_data_february_2021/interventions"
+MAIN_FOLDER_TRAINING_DATA = "~/workspace/NeuralNetworkSeptember21/Data/pilot_study_may_2021"
+MAIN_FOLDER_TESTING_DATA = "~/workspace/NeuralNetworkSeptember21/Data/training_data_february_2021/interventions"
 
 def create_and_train_classifier(x_train, y_train, x_val, y_val, output_directory, classifier_name, \
                                 dropout_conv1d, dropout_dense, channels_conv1d, batch_size):
