@@ -264,6 +264,7 @@ def compute_sktime_input_from_pilot_study(main_folder, time_window_size = 10, st
                                           remove_unannotated_labels = False, \
                                           remove_multi_labels = False, balance_classes = False):
 
+    print("main_folder", main_folder)
     interventions_folder = os.path.join(main_folder, "interventions_clean") #"C:\\Users\\Camille\\Documents\\These\\PilotStudyMay21\\results_total
     annotations_folder =  os.path.join(main_folder, "annotations")
     buttons_list_path = os.path.join(interventions_folder, "buttons_list")
