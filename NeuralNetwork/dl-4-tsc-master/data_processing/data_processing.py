@@ -6,6 +6,7 @@ import glob
 import json
 from collections import defaultdict
 
+LINUX = True
 
 ANNOTATIONS_COLUMNS = ["menu_interaction", "information_assimilation_augmentation", \
                         "information_assimilation_real_world", "real_world_task", "visual_search", \
@@ -25,7 +26,10 @@ def load_ids(interventions_folder, annotations_folder = ""):
     regex = os.path.join(interventions_folder, "data_*.csv")
     offset = len("data_")
     for path in glob.glob(regex):
-        id = int(path.split("\\")[-1][offset:offset+4])
+        if LINUX:
+            id = int(path.split("/")[-1][offset:offset+4])
+        else:
+            id = int(path.split("\\")[-1][offset:offset+4])
         if len(annotations_folder):
            if os.path.exists(os.path.join(annotations_folder, "annotation_{}.json".format(id))):
             ids.append(id)
