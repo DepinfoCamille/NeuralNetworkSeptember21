@@ -182,11 +182,12 @@ if __name__ == "__main__":
 
 
     # Default parameters, can be overwritten 
-    dropout_conv1D_list = [0., 0.1, 0.2, 0.5]
-    dropout_dense_list = [0., 0.5, 0.8]
+    dropout_conv1D_list = [0.1, 0.2, 0.5]
+    dropout_dense_list = [0.3, 0.5, 0.8]
     channels_conv1d_list = [64, 128, 256]
     strides = [2, 4, 6]
     i = 0
+    x_train = None
     # Find optimal combination of features with default neural network parameters
     for parameters in already_fine_tuned.values():
 
@@ -197,46 +198,50 @@ if __name__ == "__main__":
 
         for stride in strides:
 
-            x_train, y_train = compute_sktime_input_from_pilot_study(MAIN_FOLDER_TRAINING_DATA, time_window_size, stride, \
-                                                            remove_unannotated_labels = True, 
-                                                            features_columns = feature_combination, \
-                                                            remove_multi_labels = True, balance_classes=True, \
-                                                            gather_classes = None)#classes_to_gather)
-            x_val, y_val = compute_sktime_input_from_first_scenarii_data(MAIN_FOLDER_TESTING_DATA, BUTTONS_LIST_PATH, \
-                                                                    time_window_size, stride, \
-                                                                    features_columns = feature_combination,
-                                                                    remove_unannotated_labels = True, \
-                                                                    gather_classes = None)#classes_to_gather)
-            # Shuffle samples
-            p = np.random.permutation(x_train.shape[0])
-            x_train = x_train[p, :, :]
-            y_train = y_train[p, :]
-
-            train_cut = x_train.shape[0]//5
-            val_cut = x_val.shape[0]//4
-            x_val_temp = np.concatenate([x_train[:train_cut, :, :], x_val[:val_cut, :, :]], axis = 0)
-            y_val_temp = np.concatenate([y_train[:train_cut, :], y_val[:val_cut, :]], axis = 0)
-
-            x_train = np.concatenate([x_train[train_cut:, :, :], x_val[val_cut:, :, :]], axis = 0)
-            y_train = np.concatenate([y_train[train_cut:, :], y_val[val_cut:, :]], axis = 0)
-
-            x_val = x_val_temp
-            y_val = y_val_temp
-
-
-            for dropout_conv1D in dropout_conv1D:
-                for dropout_conv1D in dropout_conv1D_list:
+             for dropout_conv1D in dropout_conv1D_list:
+                for dropout_dense in dropout_dense_list:
                     for channels_conv1d in channels_conv1d_list:
 
-                        local_path = os.path.join("results_2", "{}_{}".format(classifier_name, i))
-                        output_directory = os.path.join(ROOT_DIR, local_path)
-                        parameters_path = os.path.join(output_directory, "parameters.json")
 
-                        create_directory(output_directory)
-                        write_parameters(parameters_path, classifier_name, feature_combination, dropout_conv1d, dropout_dense, \
-                                            channels_conv1d, batch_size, time_window_size, stride)
-                        create_and_train_classifier(x_train, y_train, x_val, y_val, \
-                                                    output_directory, classifier_name, dropout_conv1d, dropout_dense, \
-                                                    channels_conv1d, batch_size)
+                        if (i > 88 and i < 200) or i > 418:
+
+
+                            if x_train == None:
+
+                                x_train, y_train = compute_sktime_input_from_pilot_study(MAIN_FOLDER_TRAINING_DATA, time_window_size, stride, \
+                                                                                remove_unannotated_labels = True, 
+                                                                                features_columns = feature_combination, \
+                                                                                remove_multi_labels = True, balance_classes=True, \
+                                                                                gather_classes = None)#classes_to_gather)
+                                x_val, y_val = compute_sktime_input_from_first_scenarii_data(MAIN_FOLDER_TESTING_DATA, BUTTONS_LIST_PATH, \
+                                                                                        time_window_size, stride, \
+                                                                                        features_columns = feature_combination,
+                                                                                        remove_unannotated_labels = True, \
+                                                                                        gather_classes = None)#classes_to_gather)
+
+                                train_cut = x_train.shape[0]//5
+                                val_cut = x_val.shape[0]//4
+                                x_val_temp = np.concatenate([x_train[:train_cut, :, :], x_val[:val_cut, :, :]], axis = 0)
+                                y_val_temp = np.concatenate([y_train[:train_cut, :], y_val[:val_cut, :]], axis = 0)
+
+                                x_train = np.concatenate([x_train[train_cut:, :, :], x_val[val_cut:, :, :]], axis = 0)
+                                y_train = np.concatenate([y_train[train_cut:, :], y_val[val_cut:, :]], axis = 0)
+
+                                x_val = x_val_temp
+                                y_val = y_val_temp
+                                print("i sup", i)
+
+                            local_path = os.path.join("results_2", "{}_{}".format(classifier_name, i))
+                            output_directory = os.path.join(ROOT_DIR, local_path)
+                            parameters_path = os.path.join(output_directory, "parameters.json")
+
+                            create_directory(output_directory)
+                            print("output dir", output_directory)
+                            write_parameters(parameters_path, classifier_name, feature_combination, dropout_conv1d, dropout_dense, \
+                                                channels_conv1d, batch_size, time_window_size, stride)
+                            create_and_train_classifier(x_train, y_train, x_val, y_val, \
+                                                        output_directory, classifier_name, dropout_conv1d, dropout_dense, \
+                                                        channels_conv1d, batch_size)
 
                         i += 1
+             x_train = None                                     
