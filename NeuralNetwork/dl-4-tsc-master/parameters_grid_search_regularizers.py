@@ -36,19 +36,24 @@ MAIN_FOLDER_TESTING_DATA = "/workspace/NeuralNetworkSeptember21/Data/training_da
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean/buttons_list")
 
 def create_and_train_classifier(x_train, y_train, x_val, y_val, output_directory, classifier_name, \
-                                dropout_conv1d, dropout_dense, channels_conv1d, batch_size):
+                                dropout_conv1d, dropout_dense, \
+                                kernel_dense_l1 = kernel_dense_l1, kernel_dense_l2 = kernel_dense_l2, \
+                                bias_conv = bias_conv, bias_dense = bias_dense, \
+                                channels_conv1d = channels_conv1d, batch_size = channels_conv1d):
 
 
     test_dir_df_metrics = os.path.join(output_directory, 'df_metrics.csv')
     create_directory(output_directory)
 
     fit_classifier(x_train, y_train, x_val, y_val, output_directory, \
-                   dropout_conv1d, dropout_dense, channels_conv1d, batch_size)
+                   dropout_conv1d, dropout_dense, channels_conv1d, batch_size, \
+                   kernel_dense_l1, kernel_dense_l2, bias_conv, bias_dense)
 
     print('DONE')
 
 def fit_classifier(x_train, y_train, x_val, y_val, output_directory, \
-                   dropout_conv1d, dropout_dense, channels_conv1d, batch_size):
+                   dropout_conv1d, dropout_dense, channels_conv1d, batch_size, \
+                   kernel_dense_l1, kernel_dense_l2, bias_conv, bias_dense):
 
     nb_classes = np.unique(np.concatenate((y_train, y_val), axis=0), axis = 0).shape[1]
 
@@ -61,7 +66,9 @@ def fit_classifier(x_train, y_train, x_val, y_val, output_directory, \
     if classifier_name == 'fcn_multi_labels_temp' and y_train is not None:
         classifier = fcn_multi_labels_temp.Classifier_FCN(output_directory, input_shape, nb_classes, y_train, \
                                                     dropout_conv1D = dropout_conv1d, dropout_dense = dropout_dense, \
-                                                    channels_conv1D = channels_conv1d, batch_size = batch_size, \
+                                                    channels_conv1D = channels_conv1d, batch_size = batch_size, 
+                                                    kernel_dense_l1 = kernel_dense_l1, kernel_dense_l2 = kernel_dense_l2, \
+                                                    bias_conv = bias_conv, bias_dense = bias_dense, \
                                                     verbose = True)
 
     if classifier_name == 'fcn_multi_labels' and y_train is not None:
