@@ -198,13 +198,12 @@ if __name__ == "__main__":
 
         for stride in strides:
 
-             for dropout_conv1D in dropout_conv1D_list:
+            for dropout_conv1D in dropout_conv1D_list:
                 for dropout_dense in dropout_dense_list:
                     for channels_conv1d in channels_conv1d_list:
 
-
+                        print("i", i)
                         if (i > 88 and i < 200) or i > 393:
-
 
                             if x_train is None:
 
@@ -244,4 +243,4 @@ if __name__ == "__main__":
                                                         channels_conv1d, batch_size)
 
                         i += 1
-             x_train = None                                     
+            x_train = None                                     
