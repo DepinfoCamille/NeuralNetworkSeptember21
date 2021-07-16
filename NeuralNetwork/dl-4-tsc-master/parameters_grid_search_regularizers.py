@@ -25,7 +25,7 @@ FIND_FEATURES = True
 FIND_NETWORK_PARAMETERS = False
 
 
-OUTPUT_DIR = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\NeuralNetwork\\dl-4-tsc-master\\tune_parameters\\regularizers"
+ROOT_DIR = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\NeuralNetwork\\dl-4-tsc-master\\tune_parameters\\regularizers"
 MAIN_FOLDER_TRAINING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\Data\\pilot_study_may_2021"
 MAIN_FOLDER_TESTING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\Data\\training_data_february_2021\\interventions"
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean\\buttons_list")
@@ -37,9 +37,8 @@ BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean
 
 def create_and_train_classifier(x_train, y_train, x_val, y_val, output_directory, classifier_name, \
                                 dropout_conv1d, dropout_dense, \
-                                kernel_dense_l1 = kernel_dense_l1, kernel_dense_l2 = kernel_dense_l2, \
-                                bias_conv = bias_conv, bias_dense = bias_dense, \
-                                channels_conv1d = channels_conv1d, batch_size = channels_conv1d):
+                                kernel_dense_l1, kernel_dense_l2, bias_conv, bias_dense, \
+                                channels_conv1d, batch_size):
 
 
     test_dir_df_metrics = os.path.join(output_directory, 'df_metrics.csv')
@@ -158,9 +157,8 @@ if __name__ == "__main__":
 
                     create_and_train_classifier(x_train, y_train, x_val, y_val, \
                                 output_directory, classifier_name, dropout_conv1d, dropout_dense, \
-                                kernel_dense_l1 = kernel_dense_l1, kernel_dense_l2 = kernel_dense_l2, \
-                                bias_conv = bias_conv, bias_dense = bias_dense, \
-                                channels_conv1d = channels_conv1d, batch_size = channels_conv1d)
+                                kernel_dense_l1,kernel_dense_l2, bias_conv, bias_dense, \
+                                channels_conv1d, batch_size)
                     i += 1
 
 
