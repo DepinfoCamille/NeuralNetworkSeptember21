@@ -6,7 +6,7 @@ import glob
 import json
 from collections import defaultdict
 
-LINUX = True
+LINUX = False #True
 
 ANNOTATIONS_COLUMNS = ["menu_interaction", "information_assimilation_augmentation", \
                         "information_assimilation_real_world", "real_world_task", "visual_search", \
