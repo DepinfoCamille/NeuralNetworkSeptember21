@@ -5,9 +5,9 @@ import pandas as pd
 
 
 ROOT_DIR = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\NeuralNetwork\\dl-4-tsc-master\\tune_parameters"
-TARGET_DIR = join(ROOT_DIR, "results_summary")
+TARGET_DIR = join(ROOT_DIR, "results_2_summary")
 
-FINE_TUNE = True
+FINE_TUNE = False
 
 if __name__ == "__main__":
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     if FINE_TUNE:
         for id in [2, 9, 10, 29, 75, 97, 102, 105, 108, 109, \
                    110, 114, 123, 132, 137, 159, 186, 213, 231, 240, 249]:
-            values = pd.read_csv(join(ROOT_DIR, "results\\fcn_multi_labels_{}\\history.csv").format(id))
+            values = pd.read_csv(join(ROOT_DIR, "results_2\\fcn_multi_labels_{}\\history.csv").format(id))
             values["id"] = id
             best_row = values.loc[(values["f1_score"] + 2*values["val_f1_score"]).argmax(axis = 0), :]
             #print("best_row", best_row.columns)
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     else:
 
         offset = len("fcn_multi_labels_")
-        for file_path in glob(join(ROOT_DIR, "results\\fcn_*")):
+        for file_path in glob(join(ROOT_DIR, "results_2\\fcn_*")):
             id = int(file_path.split("\\")[-1][offset:])
             source_epochs_loss = join(file_path, "epochs_loss.png")
             source_parameters = join(file_path, "parameters.json")
