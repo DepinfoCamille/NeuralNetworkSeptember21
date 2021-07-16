@@ -92,6 +92,7 @@ if __name__ == "__main__":
    
     print("helloworld")
     parameters_path = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\NeuralNetwork\\dl-4-tsc-master\\tune_parameters\\results_2_summary\\parameters_155.json"
+    parameters_path = "/workspace/NeuralNetworkSeptember21/dl-4-tsc-master/tune_parameters/results_2/fcn_multi_labels_155/parameters.json"
     with open(parameters_path, "r") as f:
         parameters = json.load(f)
 
@@ -140,6 +141,7 @@ if __name__ == "__main__":
             for bias_conv in bias_conv_list:
                 for bias_dense in bias_dense_list:
 
+                    local_path = str(i)
                     output_directory = os.path.join(ROOT_DIR, local_path)
                     parameters_path = os.path.join(output_directory, "regularizers_parameters.json")
 
