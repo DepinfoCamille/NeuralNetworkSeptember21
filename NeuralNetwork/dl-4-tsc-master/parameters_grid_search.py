@@ -30,10 +30,10 @@ MAIN_FOLDER_TRAINING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSep
 MAIN_FOLDER_TESTING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\Data\\training_data_february_2021\\interventions"
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean\\buttons_list")
 
-#ROOT_DIR = "/workspace/NeuralNetworkSeptember21/dl-4-tsc-master/tune_parameters"
-#MAIN_FOLDER_TRAINING_DATA = "/workspace/NeuralNetworkSeptember21/Data/pilot_study_may_2021"
-#MAIN_FOLDER_TESTING_DATA = "/workspace/NeuralNetworkSeptember21/Data/training_data_february_2021/interventions"
-#BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean/buttons_list")
+ROOT_DIR = "/workspace/NeuralNetworkSeptember21/NeuralNetwork/dl-4-tsc-master/tune_parameters"
+MAIN_FOLDER_TRAINING_DATA = "/workspace/NeuralNetworkSeptember21/Data/pilot_study_may_2021"
+MAIN_FOLDER_TESTING_DATA = "/workspace/NeuralNetworkSeptember21/Data/training_data_february_2021/interventions"
+BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean/buttons_list")
 
 def create_and_train_classifier(x_train, y_train, x_val, y_val, output_directory, classifier_name, \
                                 dropout_conv1d, dropout_dense, channels_conv1d, batch_size):
@@ -239,7 +239,7 @@ if __name__ == "__main__":
                                 y_val = y_val_temp
                                 print("i sup", i)
 
-                            local_path = os.path.join("results_2", "{}_{}".format(classifier_name, i))
+                            local_path = os.path.join("results_3", "{}_{}".format(classifier_name, i))
                             output_directory = os.path.join(ROOT_DIR, local_path)
                             parameters_path = os.path.join(output_directory, "parameters.json")
 
