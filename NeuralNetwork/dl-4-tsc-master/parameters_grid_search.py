@@ -181,6 +181,12 @@ if __name__ == "__main__":
     }
 
 
+    parameters_to_test = [["headLinearVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm"], \
+                          ["headLinearVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm"], \
+                          ["headLinearVelocityNorm", "handIsVisible", "handVelocityNorm", "gazeDirectionVelocityNorm"], \
+                          [ "headAngularVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm" ], \
+                          ["headLinearVelocityNorm", "headAngularVelocityNorm", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm"]]
+
     # Default parameters, can be overwritten 
     dropout_conv1D_list = [0.1, 0.2, 0.5]
     dropout_dense_list = [0.3, 0.5, 0.8]
@@ -189,12 +195,15 @@ if __name__ == "__main__":
     i = 0
     x_train = None
     # Find optimal combination of features with default neural network parameters
-    for parameters in already_fine_tuned.values():
+    #for parameters in already_fine_tuned.values():
+    for feature_combination in parameters_to_test:
 
-        time_window_size = parameters["time_window_size"]
-        stride = parameters["stride"]
-        feature_combination = parameters["features_columns"]
-        batch_size = parameters["batch_size"]
+        #time_window_size = parameters["time_window_size"]
+        #stride = parameters["stride"]
+        #feature_combination = parameters["features_columns"]
+        #batch_size = parameters["batch_size"]
+        time_window_size = 15
+        batch_size = 4
 
         for stride in strides:
 
@@ -203,7 +212,7 @@ if __name__ == "__main__":
                     for channels_conv1d in channels_conv1d_list:
 
                         print("i", i)
-                        if (i > 88 and i < 200) or i > 393:
+                        if True:#(i > 88 and i < 200) or i > 393:
 
                             if x_train is None:
 
