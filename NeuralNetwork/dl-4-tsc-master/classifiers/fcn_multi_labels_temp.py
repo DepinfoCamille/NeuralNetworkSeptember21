@@ -190,7 +190,7 @@ class Classifier_FCN:
 			exit()
 		# x_val and y_val are only used to monitor the test loss and NOT for training  
 		#self.batch_size = 16
-		nb_epochs = 100#2000
+		nb_epochs = 800#2000
 
 		mini_batch_size = int(min(x_train.shape[0]/10, self.batch_size))
 

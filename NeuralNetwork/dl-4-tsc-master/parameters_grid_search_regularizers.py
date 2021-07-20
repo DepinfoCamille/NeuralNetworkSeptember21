@@ -30,7 +30,7 @@ MAIN_FOLDER_TRAINING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSep
 MAIN_FOLDER_TESTING_DATA = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\Data\\training_data_february_2021\\interventions"
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean\\buttons_list")
 
-ROOT_DIR = "/workspace/NeuralNetworkSeptember21/NeuralNetwork/dl-4-tsc-master/tune_parameters/regularizers"
+ROOT_DIR = "/workspace/NeuralNetworkSeptember21/NeuralNetwork/dl-4-tsc-master/tune_parameters/regularizers_227_all"
 MAIN_FOLDER_TRAINING_DATA = "/workspace/NeuralNetworkSeptember21/Data/pilot_study_may_2021"
 MAIN_FOLDER_TESTING_DATA = "/workspace/NeuralNetworkSeptember21/Data/training_data_february_2021/interventions"
 BUTTONS_LIST_PATH = os.path.join(MAIN_FOLDER_TRAINING_DATA, "interventions_clean/buttons_list")
@@ -98,7 +98,7 @@ if __name__ == "__main__":
    
     print("helloworld")
     parameters_path = "C:\\Users\\Camille\\Documents\\These\\ExperienceSeptember21\\NeuralNetwork\\dl-4-tsc-master\\tune_parameters\\results_2_summary\\parameters_155.json"
-    parameters_path = "/workspace/NeuralNetworkSeptember21/dl-4-tsc-master/tune_parameters/results_2/fcn_multi_labels_155/parameters.json"
+    parameters_path = "/workspace/NeuralNetworkSeptember21/NeuralNetwork/dl-4-tsc-master/tune_parameters/results_2/fcn_multi_labels_227/parameters.json"
     with open(parameters_path, "r") as f:
         parameters = json.load(f)
 
@@ -146,16 +146,18 @@ if __name__ == "__main__":
         for kernel_dense_l2 in kernel_dense_l2_list:
             for bias_conv in bias_conv_list:
                 for bias_dense in bias_dense_list:
+                    
+                    if i in [1, 10, 29, 57, 88, 103, 110, 122, 130, 140]:
 
-                    local_path = str(i)
-                    output_directory = os.path.join(ROOT_DIR, local_path)
-                    parameters_path = os.path.join(output_directory, "regularizers_parameters.json")
+                        local_path = str(i)
+                        output_directory = os.path.join(ROOT_DIR, local_path)
+                        parameters_path = os.path.join(output_directory, "regularizers_parameters.json")
 
-                    create_directory(output_directory)
-                    print("output dir", output_directory)
-                    write_parameters(parameters_path, kernel_dense_l1,kernel_dense_l2, bias_conv, bias_dense)
+                        create_directory(output_directory)
+                        print("output dir", output_directory)
+                        write_parameters(parameters_path, kernel_dense_l1,kernel_dense_l2, bias_conv, bias_dense)
 
-                    create_and_train_classifier(x_train, y_train, x_val, y_val, \
+                        create_and_train_classifier(x_train, y_train, x_val, y_val, \
                                 output_directory, classifier_name, dropout_conv1d, dropout_dense, \
                                 kernel_dense_l1,kernel_dense_l2, bias_conv, bias_dense, \
                                 channels_conv1d, batch_size)
