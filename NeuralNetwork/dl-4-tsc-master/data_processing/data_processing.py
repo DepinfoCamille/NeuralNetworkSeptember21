@@ -143,7 +143,7 @@ def intervention_data_as_feature_vectors(intervention_data, buttons_list):
     intervention_data["handIsVisible"] = intervention_data.apply(lambda x: float(x["rightHandPositionNorm"] > 0) \
                                                                         + float(x["leftHandPositionNorm"] > 0), axis = 1)
 
-    intervention_data["handVelocityNorm"] = intervention_data.apply(lambda x: x["handVelocityNorm"] + x["leftHandVelocityNorm"], axis = 1)
+    intervention_data["handVelocityNorm"] = intervention_data.apply(lambda x: x["rightHandVelocityNorm"] + x["leftHandVelocityNorm"], axis = 1)
     return intervention_data
 
 

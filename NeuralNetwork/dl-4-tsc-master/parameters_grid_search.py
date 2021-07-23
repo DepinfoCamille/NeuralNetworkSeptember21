@@ -56,7 +56,7 @@ def fit_classifier(x_train, y_train, x_val, y_val, dropout_conv1D, dropout_dense
 
     input_shape = x_train.shape[1:]
     if classifier_name == 'fcn_multi_labels' and y_train is not None:
-        classifier = fcn_multi_labels.Classifier_FCN(output_directory, input_shape, nb_classes, y_train, \
+        classifier = fcn_multi_labels.Classifier_FCN(output_directory, input_shape, nb_classes, np.concatenate([y_train, y_val], axis = 0), \
                                                     dropout_conv1D = dropout_conv1D, dropout_dense = dropout_dense, \
                                                     channels_conv1d = channels_conv1d, batch_size = batch_size, \
                                                     verbose = True)
@@ -206,13 +206,12 @@ if __name__ == "__main__":
         batch_size = 4
 
         for stride in strides:
-
             for dropout_conv1D in dropout_conv1D_list:
                 for dropout_dense in dropout_dense_list:
                     for channels_conv1d in channels_conv1d_list:
 
-                        print("i", i)
-                        if True:#(i > 88 and i < 200) or i > 393:
+                        print("i",  i)
+                        if (i > 134 and i < 162) or (i > 53 and i < 81) or i > 197:#(i > 88 and i < 200) or i > 393:
 
                             if x_train is None:
 
@@ -227,19 +226,29 @@ if __name__ == "__main__":
                                                                                         remove_unannotated_labels = True, \
                                                                                         gather_classes = None)#classes_to_gather)
 
-                                train_cut = x_train.shape[0]//5
-                                val_cut = x_val.shape[0]//4
+                                if stride < 6:
+
+                                    train_cut = x_train.shape[0]//5
+                                    val_cut = x_val.shape[0]//4
+                                else:
+                                    train_cut = x_train.shape[0]//6
+                                    val_cut = x_val.shape[0]//6
+
                                 x_val_temp = np.concatenate([x_train[:train_cut, :, :], x_val[:val_cut, :, :]], axis = 0)
                                 y_val_temp = np.concatenate([y_train[:train_cut, :], y_val[:val_cut, :]], axis = 0)
 
-                                x_train = np.concatenate([x_train[train_cut:, :, :], x_val[val_cut:, :, :]], axis = 0)
-                                y_train = np.concatenate([y_train[train_cut:, :], y_val[val_cut:, :]], axis = 0)
+                                x_val_temp = x_val[:val_cut, :, :]
+                                y_val_temp = y_val[:val_cut, :]
+                                
+                                #x_train = np.concatenate([x_train[train_cut:, :, :], x_val[2*val_cut:, :, :]], axis = 0)
+                                #y_train = np.concatenate([y_train[train_cut:, :], y_val[2*val_cut:, :]], axis = 0)
 
-                                x_val = x_val_temp
-                                y_val = y_val_temp
-                                print("i sup", i)
-
-                            local_path = os.path.join("results_3", "{}_{}".format(classifier_name, i))
+                                #x_val = x_val_temp
+                                #y_val = y_val_temp
+                                #print("i sup", i)
+                                print("x_train", x_train.shape)
+                                print("x_val", x_val.shape)
+                            local_path = os.path.join("results_3", "{}_{}_ter".format(classifier_name, i))
                             output_directory = os.path.join(ROOT_DIR, local_path)
                             parameters_path = os.path.join(output_directory, "parameters.json")
 
