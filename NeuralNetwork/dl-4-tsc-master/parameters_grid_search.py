@@ -184,14 +184,15 @@ if __name__ == "__main__":
     parameters_to_test = [["headLinearVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm"], \
                           ["headLinearVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm"], \
                           ["headLinearVelocityNorm", "handIsVisible", "handVelocityNorm", "gazeDirectionVelocityNorm"], \
-                          [ "headAngularVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm" ], \
-                          ["headLinearVelocityNorm", "headAngularVelocityNorm", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm"]]
+                          ["headLinearVelocityNorm", "headAngularVelocityNorm", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm"], 
+                          ["headLinearVelocityNorm", "headAngularVelocityNorm", "handIsVisible", "buttonClicked", "handVelocityNorm", "gazeDirectionVelocityNorm"]]
 
     # Default parameters, can be overwritten 
-    dropout_conv1D_list = [0.1, 0.2, 0.5]
+    dropout_conv1D_list = [0.1, 0.5]
     dropout_dense_list = [0.3, 0.5, 0.8]
     channels_conv1d_list = [64, 128, 256]
     strides = [2, 4, 6]
+    remove_multi_labels_list = [True, False]
     i = 0
     x_train = None
     # Find optimal combination of features with default neural network parameters
@@ -206,49 +207,47 @@ if __name__ == "__main__":
         batch_size = 4
 
         for stride in strides:
-            for dropout_conv1D in dropout_conv1D_list:
-                for dropout_dense in dropout_dense_list:
-                    for channels_conv1d in channels_conv1d_list:
+            for remove_multi_labels in remove_multi_labels_list:
+                for dropout_conv1D in dropout_conv1D_list:
+                    for dropout_dense in dropout_dense_list:
+                        for channels_conv1d in channels_conv1d_list:
 
-                        print("i",  i)
-                        if (i > 134 and i < 162) or (i > 53 and i < 81) or i > 197:#(i > 88 and i < 200) or i > 393:
+                        #for remove_multi_labels in remove_multi_labels_list:
 
                             if x_train is None:
 
-                                x_train, y_train = compute_sktime_input_from_pilot_study(MAIN_FOLDER_TRAINING_DATA, time_window_size, stride, \
+                                x_train_0, y_train_0 = compute_sktime_input_from_pilot_study(MAIN_FOLDER_TRAINING_DATA + "_train", time_window_size, stride, \
                                                                                 remove_unannotated_labels = True, 
                                                                                 features_columns = feature_combination, \
-                                                                                remove_multi_labels = True, balance_classes=True, \
+                                                                                remove_multi_labels = remove_multi_labels, balance_classes=True, \
                                                                                 gather_classes = None)#classes_to_gather)
-                                x_val, y_val = compute_sktime_input_from_first_scenarii_data(MAIN_FOLDER_TESTING_DATA, BUTTONS_LIST_PATH, \
+
+                                x_train_1, y_train_1 = compute_sktime_input_from_first_scenarii_data(MAIN_FOLDER_TESTING_DATA + "_train", BUTTONS_LIST_PATH, \
                                                                                         time_window_size, stride, \
-                                                                                        features_columns = feature_combination,
+                                                                                        features_columns = feature_combination, \
+                                                                                        remove_multi_labels = remove_multi_labels,
                                                                                         remove_unannotated_labels = True, \
                                                                                         gather_classes = None)#classes_to_gather)
 
-                                if stride < 6:
+                                                                                features_columns = feature_combination, \
+                                                                                remove_multi_labels = remove_multi_labels, balance_classes=True, \
+                                                                                gather_classes = None)#classes_to_gather)
 
-                                    train_cut = x_train.shape[0]//5
-                                    val_cut = x_val.shape[0]//4
-                                else:
-                                    train_cut = x_train.shape[0]//6
-                                    val_cut = x_val.shape[0]//6
+                                x_val_1, y_val_1 = compute_sktime_input_from_first_scenarii_data(MAIN_FOLDER_TESTING_DATA  + "_val", BUTTONS_LIST_PATH, \
+                                                                                        time_window_size, stride, \
+                                                                                        features_columns = feature_combination,
+                                                                                        remove_multi_labels = remove_multi_labels, 
+                                                                                        remove_unannotated_labels = True, \
+                                                                                        gather_classes = None)#classes_to_gather)
 
-                                x_val_temp = np.concatenate([x_train[:train_cut, :, :], x_val[:val_cut, :, :]], axis = 0)
-                                y_val_temp = np.concatenate([y_train[:train_cut, :], y_val[:val_cut, :]], axis = 0)
+                                x_train = np.concatenate([x_train_0, x_train_1], axis = 0)
+                                y_train = np.concatenate([y_train_0, y_train_1], axis = 0)
 
-                                x_val_temp = x_val[:val_cut, :, :]
-                                y_val_temp = y_val[:val_cut, :]
-                                
-                                #x_train = np.concatenate([x_train[train_cut:, :, :], x_val[2*val_cut:, :, :]], axis = 0)
-                                #y_train = np.concatenate([y_train[train_cut:, :], y_val[2*val_cut:, :]], axis = 0)
-
-                                #x_val = x_val_temp
-                                #y_val = y_val_temp
-                                #print("i sup", i)
+                                x_val = np.concatenate([x_val_0, x_val_1], axis = 0)
+                                y_val = np.concatenate([y_val_0, y_val_1], axis = 0)
                                 print("x_train", x_train.shape)
                                 print("x_val", x_val.shape)
-                            local_path = os.path.join("results_3", "{}_{}_ter".format(classifier_name, i))
+                            local_path = os.path.join("results_3", "{}_{}".format(classifier_name, i))
                             output_directory = os.path.join(ROOT_DIR, local_path)
                             parameters_path = os.path.join(output_directory, "parameters.json")
 
@@ -260,5 +259,5 @@ if __name__ == "__main__":
                                                         output_directory, classifier_name, dropout_conv1d, dropout_dense, \
                                                         channels_conv1d, batch_size)
 
-                        i += 1
-            x_train = None                                     
+                            i += 1
+                x_train = None                                     
