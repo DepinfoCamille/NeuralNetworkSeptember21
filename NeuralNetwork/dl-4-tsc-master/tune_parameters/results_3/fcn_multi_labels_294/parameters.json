@@ -1,1 +1,0 @@
-{"classifier_name": "fcn_multi_labels", "features_columns": ["headLinearVelocityNorm", "handIsVisible", "handVelocityNorm", "gazeDirectionVelocityNorm"], "dropout_conv1d": 0.2, "dropout_dense": 0.8, "channels_conv1d": 64, "batch_size": 4, "time_window_size": 15, "stride": 6}
