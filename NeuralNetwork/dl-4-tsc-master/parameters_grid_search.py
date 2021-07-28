@@ -71,12 +71,12 @@ def fit_classifier(x_train, y_train, x_val, y_val, dropout_conv1D, dropout_dense
 
 
 def write_parameters(path, classifier_name, features_columns, dropout_conv1d, dropout_dense, channels_conv1d, \
-                     batch_size, time_window_size, stride):
+                     batch_size, time_window_size, stride, remove_multi_labels):
 
     parameters_dict = {"classifier_name": classifier_name, "features_columns": features_columns, \
                        "dropout_conv1d": dropout_conv1d, "dropout_dense": dropout_dense, \
                        "channels_conv1d":channels_conv1d, "batch_size": batch_size, \
-                       "time_window_size": time_window_size, "stride": stride}
+                       "time_window_size": time_window_size, "stride": stride, "remove_multi_labels": remove_multi_labels}
 
     with open(path, "w") as f:
         json.dump(parameters_dict, f)
@@ -249,17 +249,19 @@ if __name__ == "__main__":
                                 y_val = np.concatenate([y_val_0, y_val_1], axis = 0)
                                 print("x_train", x_train.shape)
                                 print("x_val", x_val.shape)
-                            local_path = os.path.join("results_3", "{}_{}".format(classifier_name, i))
-                            output_directory = os.path.join(ROOT_DIR, local_path)
-                            parameters_path = os.path.join(output_directory, "parameters.json")
 
-                            create_directory(output_directory)
-                            print("output dir", output_directory)
-                            write_parameters(parameters_path, classifier_name, feature_combination, dropout_conv1d, dropout_dense, \
-                                                channels_conv1d, batch_size, time_window_size, stride)
-                            create_and_train_classifier(x_train, y_train, x_val, y_val, \
-                                                        output_directory, classifier_name, dropout_conv1d, dropout_dense, \
-                                                        channels_conv1d, batch_size)
+
+                                local_path = os.path.join("results_2", "{}_{}".format(classifier_name, i))
+                                output_directory = os.path.join(ROOT_DIR, local_path)
+                                parameters_path = os.path.join(output_directory, "parameters.json")
+
+                                create_directory(output_directory)
+                                print("output dir", output_directory)
+                                write_parameters(parameters_path, classifier_name, feature_combination, dropout_conv1d, dropout_dense, \
+                                                    channels_conv1d, batch_size, time_window_size, stride, remove_multi_labels)
+                                create_and_train_classifier(x_train, y_train, x_val, y_val, \
+                                                            output_directory, classifier_name, dropout_conv1d, dropout_dense, \
+                                                            channels_conv1d, batch_size)
 
                             i += 1
                 x_train = None                                     

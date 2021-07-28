@@ -96,6 +96,9 @@ class Classifier_FCN:
 				channels_conv1d = CONV1D_INITIAL_NB_FILTERS, batch_size = 16, verbose=False, build=True):
 		self.output_directory = output_directory
 		self.batch_size = batch_size
+		self.dropout_conv1D = dropout_conv1D
+		self.dropout_dense = dropout_dense
+		self.channels_conv1d = channels_conv1d
 		if build == True:
 			self.model = self.build_model(input_shape, nb_classes, y_train)
 			if(verbose==True):
@@ -107,25 +110,25 @@ class Classifier_FCN:
 	def build_model(self, input_shape, nb_classes, y_train):
 		input_layer = keras.layers.Input(input_shape)
 
-		conv1 = keras.layers.Conv1D(filters=CONV1D_INITIAL_NB_FILTERS, kernel_size=8, padding='same')(input_layer)
+		conv1 = keras.layers.Conv1D(filters=self.channels_conv1d, kernel_size=8, padding='same')(input_layer)
 		conv1 = keras.layers.BatchNormalization()(conv1)
-		conv1 = keras.layers.Dropout(CONV1D_DROPOUT_FRACTION)(conv1)
+		conv1 = keras.layers.Dropout(self.dropout_conv1D)(conv1)
 		conv1 = keras.layers.Activation(activation='relu')(conv1)
 
 
 		#conv2 = keras.layers.LSTM(CONV1D_INITIAL_NB_FILTERS, 2*CONV1D_INITIAL_NB_FILTERS, dropout=0.5, recurrent_dropout=0.5)(conv1)
-		conv2 = keras.layers.Conv1D(filters=2*CONV1D_INITIAL_NB_FILTERS, kernel_size=5, padding='same')(conv1)
+		conv2 = keras.layers.Conv1D(filters=2*self.channels_conv1d, kernel_size=5, padding='same')(conv1)
 		conv2 = keras.layers.BatchNormalization()(conv2)
-		conv2 = keras.layers.Dropout(CONV1D_DROPOUT_FRACTION)(conv2)
+		conv2 = keras.layers.Dropout(self.dropout_conv1D)(conv2)
 		conv2 = keras.layers.Activation('relu')(conv2)
 
-		conv3 = keras.layers.Conv1D(CONV1D_INITIAL_NB_FILTERS, kernel_size=3,padding='same')(conv2)
+		conv3 = keras.layers.Conv1D(self.channels_conv1d, kernel_size=3,padding='same')(conv2)
 		conv3 = keras.layers.BatchNormalization()(conv3)
-		conv3 = keras.layers.Dropout(CONV1D_DROPOUT_FRACTION)(conv3)
+		conv3 = keras.layers.Dropout(self.dropout_conv1D)(conv3)
 		conv3 = keras.layers.Activation('relu')(conv3)
 
 		gap_layer = keras.layers.GlobalAveragePooling1D()(conv3)
-		gap_layer = keras.layers.Dropout(DENSE_DROPOUT_FRACTION)(gap_layer)
+		gap_layer = keras.layers.Dropout(self.dropout_dense)(gap_layer)
 		output_layer = keras.layers.Dense(nb_classes, activation='sigmoid')(gap_layer)
 		#output_layer = keras.layers.Dense(nb_classes, activation='softmax')(gap_layer)
 
