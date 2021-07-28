@@ -229,6 +229,8 @@ if __name__ == "__main__":
                                                                                         remove_unannotated_labels = True, \
                                                                                         gather_classes = None)#classes_to_gather)
 
+                                x_val_0, y_val_0 = compute_sktime_input_from_pilot_study(MAIN_FOLDER_TRAINING_DATA  + "_val", time_window_size, stride, \
+                                                                                remove_unannotated_labels = True,
                                                                                 features_columns = feature_combination, \
                                                                                 remove_multi_labels = remove_multi_labels, balance_classes=True, \
                                                                                 gather_classes = None)#classes_to_gather)
