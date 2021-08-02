@@ -45,20 +45,15 @@ def create_and_train_classifier(x_train, y_train, x_val, y_val, output_directory
     create_directory(output_directory)
 
     fit_classifier(x_train, y_train, x_val, y_val, output_directory, \
-                   dropout_conv1D = dropout_conv1d, v = dropout_dense, channels_conv1D = channels_conv1d, batch_size = batch_size, \
-                   kernel_dense_l1 = kernel_dense_l1, kernel_dense_l2 = kernel_dense_l2, bias_conv = bias_conv, bias_dense = bias_dense)
+                   dropout_conv1d, dropout_dense, channels_conv1d, batch_size, \
+                   kernel_dense_l1, kernel_dense_l2, bias_conv, bias_dense)
 
-    #dropout_conv1D = CONV1D_DROPOUT_FRACTION, v = DENSE_DROPOUT_FRACTION, \
-				#channels_conv1D = CONV1D_INITIAL_NB_FILTERS, \
-				#kernel_dense_l1 = KERNEL_DENSE_L1, kernel_dense_l2 = KERNEL_DENSE_L2, \
-				#bias_conv = BIAS_CONV, bias_dense = BIAS_DENSE, \
-				#batch_size 
 
     print('DONE')
 
 def fit_classifier(x_train, y_train, x_val, y_val, output_directory, \
-                   dropout_conv1D = dropout_conv1d, dropout_dense = dropout_dense, channels_conv1d = channels_conv1d, batch_size = batch_size, \
-                   kernel_dense_l1 = kernel_dense_l1, kernel_dense_l2 = kernel_dense_l2, bias_conv = bias_conv, bias_dense = bias_dense):
+                   dropout_conv1d, dropout_dense, channels_conv1d, batch_size, \
+                   kernel_dense_l1, kernel_dense_l2, bias_conv, bias_dense):
 
     nb_classes = np.unique(np.concatenate((y_train, y_val), axis=0), axis = 0).shape[1]
 
